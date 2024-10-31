@@ -10,8 +10,11 @@ from utils import one_hot_actions, sigmoid_beta_schedule
 from tqdm import tqdm
 from einops import rearrange
 from torch import autocast
-assert torch.cuda.is_available()
-device = "cuda:0"
+import devicetorch
+
+device = devicetorch.get(torch)
+#assert torch.cuda.is_available()
+#device = "cuda:0"
 
 # load DiT checkpoint
 ckpt = torch.load("oasis500m.pt")
@@ -94,7 +97,10 @@ for i in tqdm(range(n_prompt_frames, total_frames)):
 
         # get model predictions
         with torch.no_grad():
-            with autocast("cuda", dtype=torch.half):
+            if device == "cuda":
+                with autocast("cuda", dtype=torch.half):
+                    v = model(x_curr, t, actions[:, start_frame : i + 1])
+            else:
                 v = model(x_curr, t, actions[:, start_frame : i + 1])
 
         x_start = alphas_cumprod[t].sqrt() * x_curr - (1 - alphas_cumprod[t]).sqrt() * v
@@ -116,4 +122,3 @@ x = torch.clamp(x, 0, 1)
 x = (x * 255).byte()
 write_video("video.mp4", x[0], fps=20)
 print("generation saved to video.mp4.")
-
