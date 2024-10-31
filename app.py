@@ -128,27 +128,36 @@ def generate(video_id, total_frames):
     return "video.mp4"
 
 
-video_paths = {
-    "a": "Player729-f153ac423f61-20210806-224813.chunk_000",
-    "b": "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001",
-    "c": "reechop-f153ac423f61-20210916-183423.chunk_000.actions"
-}
+video_paths = [
+    "Player729-f153ac423f61-20210806-224813.chunk_000",
+    "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001",
+    "reechop-f153ac423f61-20210916-183423.chunk_000.actions"
+]
+
+def set(name):
+    return gr.update(f"{name}.mp4")
+
 with gr.Blocks() as demo:
     # Display video options for selection
     video_selector = gr.Radio(
-        choices=list(video_paths.keys()),
+        choices=video_paths,
         label="Source"
     )
     fps = gr.Number(value=32, step=16)
-    
-    # Output video component to show the selected video
+    vid = gr.Video(interactive=False)
     output_video = gr.Video(label="Generated")
-
-    # Link selection event to duplicate the selected video
-    video_selector.change(
+    button = gr.Button("generate")
+    button.click(
         fn=generate,
         inputs=[video_selector, fps],
         outputs=output_video
+    )
+
+    # Link selection event to duplicate the selected video
+    video_selector.change(
+        fn=set,
+        inputs=[video_selector],
+        outputs=vid
     )
 
 demo.launch()
