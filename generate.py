@@ -17,13 +17,13 @@ device = devicetorch.get(torch)
 #device = "cuda:0"
 
 # load DiT checkpoint
-ckpt = torch.load("oasis500m.pt")
+ckpt = torch.load("oasis500m.pt", map_location=torch.device(device))
 model = DiT_models["DiT-S/2"]()
 model.load_state_dict(ckpt, strict=False)
 model = model.to(device).eval()
 
 # load VAE checkpoint
-vae_ckpt = torch.load("vit-l-20.pt")
+vae_ckpt = torch.load("vit-l-20.pt", map_location=torch.device(device))
 vae = VAE_models["vit-l-20-shallow-encoder"]()
 vae.load_state_dict(vae_ckpt)
 vae = vae.to(device).eval()
@@ -42,7 +42,7 @@ video_id = "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001"
 mp4_path = f"sample_data/{video_id}.mp4"
 actions_path = f"sample_data/{video_id}.actions.pt"
 video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
-actions = one_hot_actions(torch.load(actions_path))
+actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
 offset = 100
 video = video[offset:offset+total_frames].unsqueeze(0)
 actions = actions[offset:offset+total_frames].unsqueeze(0)
