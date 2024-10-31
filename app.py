@@ -147,7 +147,7 @@ with gr.Blocks() as demo:
     # Link selection event to duplicate the selected video
     video_selector.change(
         fn=generate,
-        inputs=[video_selector, fps]
+        inputs=[video_selector, fps],
         outputs=output_video
     )
 
