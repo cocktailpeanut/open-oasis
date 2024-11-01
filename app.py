@@ -51,7 +51,7 @@ def generate(video_id, total_frames, offset):
     arr2 = torch.load(actions_path, map_location=torch.device(device))
     print(f"arr2={arr2}")
     arr = []
-    for i in range(len(total_frames)):
+    for i in range(total_frames):
         arr.append({ "forward": 1, "attack": 1, "jump": 1 })
     print(f">>>> arr = {arr}")
     for i, item in enumerate(arr):
