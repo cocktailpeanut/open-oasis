@@ -48,30 +48,30 @@ def generate(video_id, total_frames, offset):
     video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
     #actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
     arr = [
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
-        { "forward": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
+        { "forward": 1, "attack": 1, "jump": 1 },
     ]
     for i, item in enumerate(arr):
         for j, action_key in enumerate(ACTION_KEYS):
@@ -79,7 +79,7 @@ def generate(video_id, total_frames, offset):
                 arr[i][action_key] = 0
         
     print(f"arr={arr}")
-    actions = one_hot_action(arr)
+    actions = one_hot_actions(arr)
     video = video[offset:offset+total_frames].unsqueeze(0)
     actions = actions[offset:offset+total_frames].unsqueeze(0)
 
