@@ -66,7 +66,7 @@ def generate(video_id, total_frames, offset):
         
     print(f"#######3 arr={arr}")
     actions = one_hot_actions(arr)
-    print(f">>>>>>>>>>>>> BEFORE actions = {actions}")
+    print(f">>>>>>>>>>>>> BEFORE actions = {actions}, length={len(actions)}")
     video = video[offset:offset+total_frames].unsqueeze(0)
     actions = actions[offset:offset+total_frames].unsqueeze(0)
     print(f">>>>>>>>>>>>> AFTER actions = {actions}")
