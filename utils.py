@@ -58,6 +58,7 @@ ACTION_KEYS = [
 def one_hot_actions(actions: Sequence[Mapping[str, int]]) -> torch.Tensor:
     actions_one_hot = torch.zeros(len(actions), len(ACTION_KEYS))
     for i, current_actions in enumerate(actions):
+        print(f"{i}: current_actions={current_actions}")
         for j, action_key in enumerate(ACTION_KEYS):
             if action_key.startswith("camera"):
                 if action_key == "cameraX":
