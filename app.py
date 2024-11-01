@@ -163,7 +163,8 @@ def generate(video_id, total_frames, offset):
     for i, frame in enumerate(x[0]):
         filename = get_next_filename("tmp")
         print(f"filename={filename}")
-        write_png(frame, filename)
+        frame_cpu = frame.cpu()
+        write_png(frame_cpu, filename)
         last_filename = filename
     print("generation saved to video.mp4.")
     return last_filename
