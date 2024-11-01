@@ -55,7 +55,11 @@ def generate(video_id, total_frames, offset):
         arr.append({ "forward": 1, "attack": 1, "jump": 1 })
     print(f">>>> arr = {arr}")
     for i, item in enumerate(arr):
-        arr[i]["camera"] = arr2[i]["camera"]
+        if len(arr2) > i:
+            arr[i]["camera"] = arr2[i]["camera"]
+            last_camera = arr[i]["camera"]
+        else:
+            arr[i]["camera"] = last_camera
         for j, action_key in enumerate(ACTION_KEYS):
             if action_key not in ["forward", "cameraX", "cameraY"]:
                 arr[i][action_key] = 0
