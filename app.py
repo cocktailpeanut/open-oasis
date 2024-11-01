@@ -49,11 +49,9 @@ def generate(video_id, total_frames, offset):
     #actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
 
     arr2 = torch.load(actions_path, map_location=torch.device(device))
-    print(f"arr2={arr2}")
     arr = []
     for i in range(total_frames + offset):
         arr.append({ "forward": 1, "attack": 1, "jump": 1 })
-    print(f">>>> arr = {arr}")
     for i, item in enumerate(arr):
         if len(arr2) > i:
             arr[i]["camera"] = arr2[i]["camera"]
@@ -64,12 +62,9 @@ def generate(video_id, total_frames, offset):
             if action_key not in ["forward", "cameraX", "cameraY"]:
                 arr[i][action_key] = 0
         
-    print(f"#######3 arr={arr}")
     actions = one_hot_actions(arr)
-    print(f">>>>>>>>>>>>> BEFORE actions = {actions}, length={len(actions)}")
     video = video[offset:offset+total_frames].unsqueeze(0)
     actions = actions[offset:offset+total_frames].unsqueeze(0)
-    print(f">>>>>>>>>>>>> AFTER actions = {actions}")
 
     # sampling inputs
     n_prompt_frames = 1
@@ -97,7 +92,6 @@ def generate(video_id, total_frames, offset):
         chunk = torch.clamp(chunk, -noise_abs_max, +noise_abs_max)
         x = torch.cat([x, chunk], dim=1)
         start_frame = max(0, i + 1 - model.max_frames)
-        print(f"start_frame={start_frame}, i={i}, max_frames={model.max_frames}")
 
         for noise_idx in reversed(range(1, ddim_noise_steps + 1)):
             # set up noise values
@@ -124,7 +118,6 @@ def generate(video_id, total_frames, offset):
             with torch.no_grad():
                 if device == "cuda":
                     with autocast("cuda", dtype=torch.half):
-                        print(f"####### {i} --- actions_length={len(actions)}  x_curr={x_curr}, t={t} act = {actions[:, start_frame: i+1]}")
                         v = model(x_curr, t, actions[:, start_frame : i + 1])
                 else:
                     v = model(x_curr, t, actions[:, start_frame : i + 1])
