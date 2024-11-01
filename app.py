@@ -5,6 +5,7 @@ References:
 import torch
 from dit import DiT_models
 from vae import VAE_models
+from torchvision import transforms
 from torchvision.io import read_video, write_video, write_png
 from utils import one_hot_actions, sigmoid_beta_schedule, ACTION_KEYS
 from tqdm import tqdm
@@ -171,8 +172,8 @@ def generate(video_id, total_frames, offset, action):
     # save video
     x = torch.clamp(x, 0, 1)
     x = (x * 255).byte()
-    #write_video("video.mp4", x[0], fps=20)
     os.makedirs("tmp", exist_ok=True)
+    write_video("tmp/video.mp4", x[0], fps=20)
     last_filename = None
     for i in range(total_frames):
     #for i, frame in enumerate(x[0]):
@@ -186,7 +187,7 @@ def generate(video_id, total_frames, offset, action):
         write_png(frame_cpu, filename)
         last_filename = filename
     print("generation saved to video.mp4.")
-    return last_filename
+    return [last_filename, "tmp/video.mp4"]
     #return "video.mp4"
 
 
@@ -209,7 +210,7 @@ with gr.Blocks() as demo:
             )
             total_frames = gr.Number(label="Number of Frames", value=2, step=16, interactive=True)
             #total_frames = gr.Number(label="Number of Frames", value=32, step=16, interactive=True)
-            offset = gr.Number(label="Start Frame", value=0, step=20, interactive=True)
+            offset = gr.Number(label="Start Frame", value=2, step=20, interactive=True)
 #            button = gr.Button("generate")
         with gr.Column():
             vid = gr.Video(label="Source", elem_id="source", interactive=False)
@@ -222,7 +223,7 @@ with gr.Blocks() as demo:
               fn=generate,
               inputs=[video_selector, total_frames, offset, button],
               #outputs=[output_video]
-              outputs=[output_img]
+              outputs=[output_img, vid]
             )
     offset.change(
         None,
