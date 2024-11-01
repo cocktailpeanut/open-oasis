@@ -147,7 +147,7 @@ with gr.Blocks() as demo:
                 label="Source"
             )
             total_frames = gr.Number(label="Number of Frames", value=32, step=16, interactive=True)
-            offset = gr.Number(label="Start Frame", value=0, step=60, interactive=True)
+            offset = gr.Number(label="Start Frame", value=0, step=20, interactive=True)
             button = gr.Button("generate")
         with gr.Column():
             vid = gr.Video(label="Source", elem_id="source", interactive=False)
@@ -156,7 +156,7 @@ with gr.Blocks() as demo:
     offset.change(
         None,
         inputs=[offset],
-        js="(x) => { console.log(x); document.querySelector('#source video').currentTime=Math.ceil(x/60) }"
+        js="(x) => { console.log(x); document.querySelector('#source video').currentTime=Math.ceil(x/20) }"
     )
     button.click(
         fn=generate,
