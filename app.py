@@ -145,7 +145,7 @@ with gr.Blocks() as demo:
                 label="Source"
             )
             fps = gr.Number(label="Number of Frames", value=32, step=16, interactive=True)
-            offset = gr.Number(label="Start Frame", value=100, step=1, interactive=True)
+            offset = gr.Number(label="Start Frame", value=0, step=60, interactive=True)
             button = gr.Button("generate")
         with gr.Column():
             vid = gr.Video(label="Source", elem_id="source", interactive=False)
