@@ -81,15 +81,15 @@ def generate(video_id, total_frames, offset, action):
     #            arr[i][action_key] = 0
     arr = []
     for i in range(total_frames + offset):
-        a = {}
+        a = { "camera": [0,0] }
         for j, action_key in enumerate(ACTION_KEYS):
             if action_key in ["cameraX", "cameraY"]:
-                a[action_key] = [0, 0]
+                print("ignore")
             else:
                 a[action_key] = 0
 
         if action in ["cameraX", "cameraY"]:
-            a[action] = [0, 0]
+            print("ignore")
         else:
             a[action] = 1
         arr.append(a)
