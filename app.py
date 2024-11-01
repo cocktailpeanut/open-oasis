@@ -137,8 +137,10 @@ def set(name):
     return gr.update(value=f"sample_data/{name}.mp4")
 
 def set_video_time(seconds):
+    print(f"set_video_time = {seconds}")
     return f"""
     const videoElement = document.querySelector('#source video');
+    console.log({ videoElement })
     videoElement.currentTime = {seconds};
     """
 
