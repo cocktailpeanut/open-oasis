@@ -12,6 +12,7 @@ from einops import rearrange
 from torch import autocast
 import devicetorch
 import gradio as gr
+import os
 
 device = devicetorch.get(torch)
 #assert torch.cuda.is_available()
@@ -194,15 +195,15 @@ with gr.Blocks() as demo:
             vid = gr.Video(label="Source", elem_id="source", interactive=False)
             #output_video = gr.Video(label="Generated", autoplay=True)
             output_img = gr.Image(label="Generated")
-        with gr.Column():
-            for key in ACTION_KEYS:
-                button = gr.Button(key)
-                button.click(
-                  fn=generate,
-                  inputs=[video_selector, total_frames, offset],
-                  #outputs=[output_video]
-                  outputs=[output_img]
-                )
+    with gr.Row():
+        for key in ACTION_KEYS:
+            button = gr.Button(key)
+            button.click(
+              fn=generate,
+              inputs=[video_selector, total_frames, offset],
+              #outputs=[output_video]
+              outputs=[output_img]
+            )
     offset.change(
         None,
         inputs=[offset],
