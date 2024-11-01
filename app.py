@@ -73,6 +73,7 @@ def generate(video_id, total_frames, offset):
     for i in tqdm(range(n_prompt_frames, total_frames)):
         chunk = torch.randn((B, 1, *x.shape[-3:]), device=device)
         chunk = torch.clamp(chunk, -noise_abs_max, +noise_abs_max)
+        print(f"x.shape={x.shape}, chunk.shape={chunk.shape}")
         x = torch.cat([x, chunk], dim=1)
         start_frame = max(0, i + 1 - model.max_frames)
 
