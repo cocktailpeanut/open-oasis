@@ -158,7 +158,7 @@ with gr.Blocks() as demo:
     )
     button.click(
         fn=generate,
-        inputs=[video_selector, fps],
+        inputs=[video_selector, fps, offset],
         outputs=output_video
     )
     video_selector.change(
