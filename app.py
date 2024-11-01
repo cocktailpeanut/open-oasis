@@ -148,6 +148,7 @@ with gr.Blocks() as demo:
         with gr.Column():
             video_selector = gr.Radio(
                 choices=video_paths,
+                elem_id="source",
                 label="Source"
             )
             fps = gr.Number(label="Number of Frames", value=32, step=16)
@@ -158,7 +159,7 @@ with gr.Blocks() as demo:
         with gr.Column():
             output_video = gr.Video(label="Generated")
     offset.change(
-        _js=set_video_time(offset)
+        js=set_video_time(offset)
     )
     button.click(
         fn=generate,
