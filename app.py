@@ -193,7 +193,7 @@ with gr.Blocks() as demo:
             vid = gr.Video(label="Source", elem_id="source", interactive=False)
         with gr.Column():
             #output_video = gr.Video(label="Generated", autoplay=True)
-            output_img = gr.Image(label="Generated", show_progress="minimal")
+            output_img = gr.Image(label="Generated")
     for key in ACTION_KEYS:
         button = gr.Button(key)
         button.click(
