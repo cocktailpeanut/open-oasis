@@ -42,6 +42,7 @@ ctx_max_noise_idx = ddim_noise_steps // 10 * 3
 #video_id = "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001"
 
 def generate(video_id, total_frames, offset):
+    print(f"generate {video_id}, total_frames={total_frames}, offset={offset}")
     mp4_path = f"sample_data/{video_id}.mp4"
     actions_path = f"sample_data/{video_id}.actions.pt"
     video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
