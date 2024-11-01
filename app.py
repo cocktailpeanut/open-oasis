@@ -154,7 +154,7 @@ with gr.Blocks() as demo:
     offset.change(
         None,
         inputs=[offset],
-        js="(x) => { console.log(x); document.querySelector('#source video').currentTime=x }"
+        js="(x) => { console.log(x); document.querySelector('#source video').currentTime=Math.ceil(x/60) }"
     )
     button.click(
         fn=generate,
