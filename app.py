@@ -186,7 +186,8 @@ with gr.Blocks() as demo:
                 choices=video_paths,
                 label="Source"
             )
-            total_frames = gr.Number(label="Number of Frames", value=32, step=16, interactive=True)
+            total_frames = gr.Number(label="Number of Frames", value=2, step=16, interactive=True)
+            #total_frames = gr.Number(label="Number of Frames", value=32, step=16, interactive=True)
             offset = gr.Number(label="Start Frame", value=0, step=20, interactive=True)
 #            button = gr.Button("generate")
         with gr.Column():
@@ -198,7 +199,7 @@ with gr.Blocks() as demo:
         button = gr.Button(key)
         button.click(
           fn=generate,
-          inputs=[video_selector, 2, offset],
+          inputs=[video_selector, total_frames, offset],
           #outputs=[output_video]
           outputs=[output_img]
         )
