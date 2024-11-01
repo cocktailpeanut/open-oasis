@@ -5,7 +5,7 @@ References:
 import torch
 from dit import DiT_models
 from vae import VAE_models
-from torchvision.io import read_video, write_video
+from torchvision.io import read_video, write_video, write_png
 from utils import one_hot_actions, sigmoid_beta_schedule, ACTION_KEYS
 from tqdm import tqdm
 from einops import rearrange
@@ -40,6 +40,23 @@ ctx_max_noise_idx = ddim_noise_steps // 10 * 3
 
 # get input video 
 #video_id = "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001"
+def get_next_filename(directory, extension="png"):
+    # List all files with the specified extension
+    files = [f for f in os.listdir(directory) if f.endswith(f".{extension}")]
+
+    # Find the highest numbered file
+    max_num = 0
+    for file in files:
+        try:
+            num = int(file.split('.')[0])  # Get the number before the extension
+            if num > max_num:
+                max_num = num
+        except ValueError:
+            continue  # Skip files that don't start with a number
+
+    # Return the next filename in sequence
+    return os.path.join(directory, f"{max_num + 1}.{extension}")
+
 
 def generate(video_id, total_frames, offset):
     print(f"generate {video_id}, total_frames={total_frames}, offset={offset}")
@@ -139,9 +156,17 @@ def generate(video_id, total_frames, offset):
     # save video
     x = torch.clamp(x, 0, 1)
     x = (x * 255).byte()
-    write_video("video.mp4", x[0], fps=20)
+    #write_video("video.mp4", x[0], fps=20)
+    os.mkdir("tmp", exist_ok=True)
+    last_filename = None
+    for i, frame in enumerate(x[0]):
+        filename = get_next_filename("tmp")
+        print(f"filename={filename}")
+        write_png(frame, filename)
+        last_filename = filename
     print("generation saved to video.mp4.")
-    return "video.mp4"
+    return last_filename
+    #return "video.mp4"
 
 
 video_paths = [
@@ -163,21 +188,30 @@ with gr.Blocks() as demo:
             )
             total_frames = gr.Number(label="Number of Frames", value=32, step=16, interactive=True)
             offset = gr.Number(label="Start Frame", value=0, step=20, interactive=True)
-            button = gr.Button("generate")
+#            button = gr.Button("generate")
         with gr.Column():
             vid = gr.Video(label="Source", elem_id="source", interactive=False)
         with gr.Column():
-            output_video = gr.Video(label="Generated")
+            #output_video = gr.Video(label="Generated", autoplay=True)
+            output_img = gr.Image(label="Generated", show_progress="minimal")
+    for key in ACTION_KEYS:
+        button = gr.Button(key)
+        button.click(
+          fn=generate,
+          inputs=[video_selector, 2, offset],
+          #outputs=[output_video]
+          outputs=[output_img]
+        )
     offset.change(
         None,
         inputs=[offset],
         js="(x) => { console.log(x); document.querySelector('#source video').currentTime=Math.ceil(x/20) }"
     )
-    button.click(
-        fn=generate,
-        inputs=[video_selector, total_frames, offset],
-        outputs=output_video
-    )
+#    button.click(
+#        fn=generate,
+#        inputs=[video_selector, total_frames, offset],
+#        outputs=output_video
+#    )
     video_selector.change(
         fn=set,
         inputs=[video_selector],
