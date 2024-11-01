@@ -59,7 +59,7 @@ def generate(video_id, total_frames, offset):
         else:
             arr[i]["camera"] = last_camera
         for j, action_key in enumerate(ACTION_KEYS):
-            if action_key not in ["forward", "cameraX", "cameraY"]:
+            if action_key not in ["forward", "cameraX", "cameraY", "attack", "jump"]:
                 arr[i][action_key] = 0
         
     actions = one_hot_actions(arr)
