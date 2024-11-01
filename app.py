@@ -136,16 +136,6 @@ video_paths = [
 def set(name):
     return gr.update(value=f"sample_data/{name}.mp4")
 
-def set_video_time(seconds):
-    print(f"set_video_time = {seconds}")
-    return f"""
-    const videoElement = document.querySelector('#source video');
-    if (videoElement) {
-      console.log({ videoElement })
-      videoElement.currentTime = {seconds};
-    }
-    """
-
 with gr.Blocks() as demo:
     # Display video options for selection
     with gr.Row():
@@ -162,7 +152,8 @@ with gr.Blocks() as demo:
         with gr.Column():
             output_video = gr.Video(label="Generated")
     offset.change(
-        js=set_video_time(offset)
+        inputs=[offset],
+        js="(x) => document.querySelector('#source video').currentTime=x"
     )
     button.click(
         fn=generate,
