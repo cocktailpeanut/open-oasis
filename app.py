@@ -191,6 +191,10 @@ with gr.Blocks() as demo:
             offset = gr.Number(label="Start Frame", value=0, step=20, interactive=True)
 #            button = gr.Button("generate")
         with gr.Column():
+            vid = gr.Video(label="Source", elem_id="source", interactive=False)
+            #output_video = gr.Video(label="Generated", autoplay=True)
+            output_img = gr.Image(label="Generated")
+        with gr.Column():
             for key in ACTION_KEYS:
                 button = gr.Button(key)
                 button.click(
@@ -199,10 +203,6 @@ with gr.Blocks() as demo:
                   #outputs=[output_video]
                   outputs=[output_img]
                 )
-        with gr.Column():
-            vid = gr.Video(label="Source", elem_id="source", interactive=False)
-            #output_video = gr.Video(label="Generated", autoplay=True)
-            output_img = gr.Image(label="Generated")
     offset.change(
         None,
         inputs=[offset],
