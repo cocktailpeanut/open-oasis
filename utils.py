@@ -56,6 +56,7 @@ ACTION_KEYS = [
 ]
 
 def one_hot_actions(actions: Sequence[Mapping[str, int]]) -> torch.Tensor:
+    print(f"actions={actions}")
     actions_one_hot = torch.zeros(len(actions), len(ACTION_KEYS))
     for i, current_actions in enumerate(actions):
         print(f"{i}: current_actions={current_actions}")

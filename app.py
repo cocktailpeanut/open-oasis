@@ -6,7 +6,7 @@ import torch
 from dit import DiT_models
 from vae import VAE_models
 from torchvision.io import read_video, write_video
-from utils import one_hot_actions, sigmoid_beta_schedule
+from utils import one_hot_actions, sigmoid_beta_schedule, ACTION_KEYS
 from tqdm import tqdm
 from einops import rearrange
 from torch import autocast
