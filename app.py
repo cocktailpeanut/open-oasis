@@ -152,8 +152,9 @@ with gr.Blocks() as demo:
         with gr.Column():
             output_video = gr.Video(label="Generated")
     offset.change(
+        None,
         inputs=[offset],
-        js="(x) => document.querySelector('#source video').currentTime=x"
+        js="(x) => { console.log(x); document.querySelector('#source video').currentTime=x }"
     )
     button.click(
         fn=generate,
