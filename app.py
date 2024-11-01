@@ -73,7 +73,7 @@ def generate(video_id, total_frames, offset):
         { "forward": 1 },
         { "forward": 1 },
     ]
-    for i, item in arr:
+    for i, item in enumerate(arr):
         for j, action_key in enumerate(ACTION_KEYS):
             if action_key != "forward":
                 arr[i][action_key] = 0
