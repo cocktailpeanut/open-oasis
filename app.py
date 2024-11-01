@@ -158,7 +158,7 @@ def generate(video_id, total_frames, offset):
     x = torch.clamp(x, 0, 1)
     x = (x * 255).byte()
     #write_video("video.mp4", x[0], fps=20)
-    os.mkdir("tmp", exist_ok=True)
+    os.makedirs("tmp", exist_ok=True)
     last_filename = None
     for i, frame in enumerate(x[0]):
         filename = get_next_filename("tmp")
