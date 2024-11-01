@@ -50,39 +50,17 @@ def generate(video_id, total_frames, offset):
 
     arr2 = torch.load(actions_path, map_location=torch.device(device))
     print(f"arr2={arr2}")
-    arr = [
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-        { "forward": 1, "attack": 1, "jump": 1 },
-    ]
+    arr = []
+    for i in range(len(total_frames)):
+        arr.append({ "forward": 1, "attack": 1, "jump": 1 })
+    print(f">>>> arr = {arr}")
     for i, item in enumerate(arr):
         arr[i]["camera"] = arr2[i]["camera"]
         for j, action_key in enumerate(ACTION_KEYS):
             if action_key not in ["forward", "cameraX", "cameraY"]:
                 arr[i][action_key] = 0
         
-    print(f"arr={arr}")
+    print(f"#######3 arr={arr}")
     actions = one_hot_actions(arr)
     video = video[offset:offset+total_frames].unsqueeze(0)
     actions = actions[offset:offset+total_frames].unsqueeze(0)
