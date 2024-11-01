@@ -73,9 +73,10 @@ def generate(video_id, total_frames, offset):
         { "forward": 1 },
         { "forward": 1 },
     ]
-    for j, action_key in enumerate(ACTION_KEYS):
-        if action_key != "forward":
-            arr[j][action_key] = 0
+    for i in len(arr):
+        for j, action_key in enumerate(ACTION_KEYS):
+            if action_key != "forward":
+                arr[i][action_key] = 0
         
     print(f"arr={arr}")
     actions = one_hot_action(arr)
