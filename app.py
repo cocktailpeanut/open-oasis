@@ -46,7 +46,33 @@ def generate(video_id, total_frames, offset):
     mp4_path = f"sample_data/{video_id}.mp4"
     actions_path = f"sample_data/{video_id}.actions.pt"
     video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
-    actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
+    #actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
+    actions = [
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+      { "forward": 1 },
+    ]
     video = video[offset:offset+total_frames].unsqueeze(0)
     actions = actions[offset:offset+total_frames].unsqueeze(0)
 
