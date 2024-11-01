@@ -41,12 +41,11 @@ ctx_max_noise_idx = ddim_noise_steps // 10 * 3
 # get input video 
 #video_id = "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001"
 
-def generate(video_id, total_frames):
+def generate(video_id, total_frames, offset):
     mp4_path = f"sample_data/{video_id}.mp4"
     actions_path = f"sample_data/{video_id}.actions.pt"
     video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
     actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
-    offset = 100
     video = video[offset:offset+total_frames].unsqueeze(0)
     actions = actions[offset:offset+total_frames].unsqueeze(0)
 
@@ -137,6 +136,12 @@ video_paths = [
 def set(name):
     return gr.update(value=f"sample_data/{name}.mp4")
 
+def set_video_time(seconds):
+    return f"""
+    const videoElement = document.querySelector('#source video');
+    videoElement.currentTime = {seconds};
+    """
+
 with gr.Blocks() as demo:
     # Display video options for selection
     with gr.Row():
@@ -145,12 +150,16 @@ with gr.Blocks() as demo:
                 choices=video_paths,
                 label="Source"
             )
-            fps = gr.Number(label="Frames", value=32, step=16)
+            fps = gr.Number(label="Number of Frames", value=32, step=16)
+            offset = gr.Number(label="Start Frame", value=100, step=1)
             button = gr.Button("generate")
         with gr.Column():
             vid = gr.Video(label="Source", interactive=False)
         with gr.Column():
             output_video = gr.Video(label="Generated")
+    offset.change(
+        _js=set_video_time(offset)
+    )
     button.click(
         fn=generate,
         inputs=[video_selector, fps],
