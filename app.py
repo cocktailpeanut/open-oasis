@@ -130,7 +130,7 @@ def generate(video_id, total_frames, offset):
 video_paths = [
     "Player729-f153ac423f61-20210806-224813.chunk_000",
     "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001",
-    "treechop-f153ac423f61-20210916-183423.chunk_000.actions"
+    "treechop-f153ac423f61-20210916-183423.chunk_000"
 ]
 
 def set(name):
