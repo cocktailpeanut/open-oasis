@@ -74,9 +74,9 @@ def generate(video_id, total_frames, offset):
     for i in tqdm(range(n_prompt_frames, total_frames)):
         chunk = torch.randn((B, 1, *x.shape[-3:]), device=device)
         chunk = torch.clamp(chunk, -noise_abs_max, +noise_abs_max)
-        print(f"x.shape={x.shape}, chunk.shape={chunk.shape}")
         x = torch.cat([x, chunk], dim=1)
         start_frame = max(0, i + 1 - model.max_frames)
+        print(f"start_frame={start_frame}, i={i}, max_frames={model.max_frames}")
 
         for noise_idx in reversed(range(1, ddim_noise_steps + 1)):
             # set up noise values
