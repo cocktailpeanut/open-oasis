@@ -160,10 +160,14 @@ def generate(video_id, total_frames, offset):
     #write_video("video.mp4", x[0], fps=20)
     os.makedirs("tmp", exist_ok=True)
     last_filename = None
-    for i, frame in enumerate(x[0]):
+    for i in range(total_frames):
+    #for i, frame in enumerate(x[0]):
+        frame = x[0, i]
+        print(f"frame={frame}")
         filename = get_next_filename("tmp")
         print(f"filename={filename}")
         frame_cpu = frame.cpu()
+        print(f"frame_cpu={frame_cpu}")
         write_png(frame_cpu, filename)
         last_filename = filename
     print("generation saved to video.mp4.")
