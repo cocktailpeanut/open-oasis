@@ -135,7 +135,7 @@ video_paths = [
 ]
 
 def set(name):
-    return gr.update(f"sample_data/{name}.mp4")
+    return gr.update(value=f"sample_data/{name}.mp4")
 
 with gr.Blocks() as demo:
     # Display video options for selection
