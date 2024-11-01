@@ -135,25 +135,27 @@ video_paths = [
 ]
 
 def set(name):
-    return gr.update(f"{name}.mp4")
+    return gr.update(f"sample_data/{name}.mp4")
 
 with gr.Blocks() as demo:
     # Display video options for selection
-    video_selector = gr.Radio(
-        choices=video_paths,
-        label="Source"
-    )
-    fps = gr.Number(value=32, step=16)
-    vid = gr.Video(interactive=False)
-    output_video = gr.Video(label="Generated")
-    button = gr.Button("generate")
+    with gr.Row():
+        with gr.Column():
+            video_selector = gr.Radio(
+                choices=video_paths,
+                label="Source"
+            )
+            fps = gr.Number(value=32, step=16)
+            button = gr.Button("generate")
+        with gr.Column():
+            vid = gr.Video(interactive=False)
+        with gr.Column():
+            output_video = gr.Video(label="Generated")
     button.click(
         fn=generate,
         inputs=[video_selector, fps],
         outputs=output_video
     )
-
-    # Link selection event to duplicate the selected video
     video_selector.change(
         fn=set,
         inputs=[video_selector],
