@@ -140,8 +140,10 @@ def set_video_time(seconds):
     print(f"set_video_time = {seconds}")
     return f"""
     const videoElement = document.querySelector('#source video');
-    console.log({ videoElement })
-    videoElement.currentTime = {seconds};
+    if (videoElement) {
+      console.log({ videoElement })
+      videoElement.currentTime = {seconds};
+    }
     """
 
 with gr.Blocks() as demo:
