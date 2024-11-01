@@ -47,6 +47,9 @@ def generate(video_id, total_frames, offset):
     actions_path = f"sample_data/{video_id}.actions.pt"
     video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
     #actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
+
+    arr2 = torch.load(actions_path, map_location=torch.device(device))
+    print(f"arr2={arr2}")
     arr = [
         { "forward": 1, "attack": 1, "jump": 1 },
         { "forward": 1, "attack": 1, "jump": 1 },
@@ -74,8 +77,9 @@ def generate(video_id, total_frames, offset):
         { "forward": 1, "attack": 1, "jump": 1 },
     ]
     for i, item in enumerate(arr):
+        arr[i]["camera"] = arr2[i]["camera"]
         for j, action_key in enumerate(ACTION_KEYS):
-            if action_key != "forward":
+            if action_key not in ["forward", "cameraX", "cameraY"]:
                 arr[i][action_key] = 0
         
     print(f"arr={arr}")
