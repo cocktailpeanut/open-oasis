@@ -163,7 +163,7 @@ def generate(video_id, total_frames, offset):
     for i in range(total_frames):
     #for i, frame in enumerate(x[0]):
         frame = x[0, i]
-        print(f"frame={frame}")
+        print(f"shape={frame.shape}")
         filename = get_next_filename("tmp")
         print(f"filename={filename}")
         frame_cpu = frame.cpu()
