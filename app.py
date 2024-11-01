@@ -148,7 +148,7 @@ with gr.Blocks() as demo:
             fps = gr.Number(value=32, step=16)
             button = gr.Button("generate")
         with gr.Column():
-            vid = gr.Video(interactive=False)
+            vid = gr.Video(label="Source", interactive=False)
         with gr.Column():
             output_video = gr.Video(label="Generated")
     button.click(
