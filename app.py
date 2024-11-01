@@ -47,32 +47,38 @@ def generate(video_id, total_frames, offset):
     actions_path = f"sample_data/{video_id}.actions.pt"
     video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
     #actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
-    actions = one_hot_actions([
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-      { "forward": 1 },
-    ])
+    arr = [
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+        { "forward": 1 },
+    ]
+    for j, action_key in enumerate(ACTION_KEYS):
+        if action_key != "forward":
+            arr[j][action_key] = 0
+        
+    print(f"arr={arr}")
+    actions = one_hot_action(arr)
     video = video[offset:offset+total_frames].unsqueeze(0)
     actions = actions[offset:offset+total_frames].unsqueeze(0)
 
