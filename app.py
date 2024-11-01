@@ -122,7 +122,7 @@ def generate(video_id, total_frames, offset):
             with torch.no_grad():
                 if device == "cuda":
                     with autocast("cuda", dtype=torch.half):
-                        print(f"####### x_curr={x_curr}, t={t} act = {actions[:, start_frame: i+1]}")
+                        print(f"####### {i} --- actions_length={len(actions)}  x_curr={x_curr}, t={t} act = {actions[:, start_frame: i+1]}")
                         v = model(x_curr, t, actions[:, start_frame : i + 1])
                 else:
                     v = model(x_curr, t, actions[:, start_frame : i + 1])
