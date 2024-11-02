@@ -62,10 +62,11 @@ def get_next_filename(directory, extension="png"):
 
 def generate(video_id, total_frames, offset, action):
     print(f"generate {video_id}, total_frames={total_frames}, offset={offset}")
-    mp4_path = f"sample_data/{video_id}.mp4"
-    actions_path = f"sample_data/{video_id}.actions.pt"
-    video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
+    #mp4_path = f"sample_data/{video_id}.mp4"
+    #actions_path = f"sample_data/{video_id}.actions.pt"
+    #video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
     #actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
+    video = read_video(video_id, pts_unit="sec")[0].float() / 255
 
     #arr2 = torch.load(actions_path, map_location=torch.device(device))
     #arr = []
@@ -204,10 +205,11 @@ with gr.Blocks() as demo:
     # Display video options for selection
     with gr.Row():
         with gr.Column():
-            video_selector = gr.Radio(
-                choices=video_paths,
-                label="Source"
-            )
+            video_selector = gr.Video(label="Source")
+            #video_selector = gr.Radio(
+            #    choices=video_paths,
+            #    label="Source"
+            #)
             total_frames = gr.Number(label="Number of Frames", value=2, step=16, interactive=True)
             #total_frames = gr.Number(label="Number of Frames", value=32, step=16, interactive=True)
             offset = gr.Number(label="Start Frame", value=2, step=20, interactive=True)
