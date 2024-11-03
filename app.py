@@ -14,6 +14,7 @@ from torch import autocast
 import devicetorch
 import gradio as gr
 import os
+import numpy as np
 
 device = devicetorch.get(torch)
 #assert torch.cuda.is_available()
@@ -86,7 +87,9 @@ def generate(video_id, total_frames, offset, action):
 
     arr = []
     for i in range(total_frames + offset):
-        a = { "camera": [0,0] }
+        cam = np.array([37, 29], dtype=np.int64)
+        a = { "camera": cam }
+
         for j, action_key in enumerate(ACTION_KEYS):
             if action_key in ["cameraX", "cameraY"]:
                 print("ignore")
