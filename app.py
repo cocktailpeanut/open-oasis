@@ -213,12 +213,12 @@ with gr.Blocks() as demo:
             #)
             total_frames = gr.Number(label="Number of Frames", value=2, step=16, interactive=True)
             #total_frames = gr.Number(label="Number of Frames", value=32, step=16, interactive=True)
-            offset = gr.Number(label="Start Frame", value=2, step=20, interactive=True)
+            offset = gr.Number(label="Start Frame", value=0, step=60, interactive=True)
 #            button = gr.Button("generate")
         with gr.Column():
             vid = gr.Video(label="Source", elem_id="source", interactive=False)
             #output_video = gr.Video(label="Generated", autoplay=True)
-            output_img = gr.Image(label="Generated")
+            output_img = gr.Image(label="Generated", visible=False)
     with gr.Row():
         for key in ACTION_KEYS:
             button = gr.Button(key)
@@ -231,7 +231,7 @@ with gr.Blocks() as demo:
     offset.change(
         None,
         inputs=[offset],
-        js="(x) => { console.log(x); document.querySelector('#source video').currentTime=Math.ceil(x/20) }"
+        js="(x) => { console.log(x); document.querySelector('#source video').currentTime=Math.ceil(x/60) }"
     )
 #    button.click(
 #        fn=generate,
