@@ -87,7 +87,8 @@ def generate(video_id, total_frames, offset, action):
 
     arr = []
     for i in range(total_frames + offset):
-        cam = np.array([37, 29], dtype=np.int64)
+        #cam = np.array([37, 29], dtype=np.int64)
+        cam = actions[i].camera
         a = { "camera": cam }
 
         for j, action_key in enumerate(ACTION_KEYS):
@@ -183,22 +184,22 @@ def generate(video_id, total_frames, offset, action):
     x = (x * 255).byte()
     os.makedirs("tmp", exist_ok=True)
     write_video("tmp/video.mp4", x[0], fps=20)
-    last_filename = None
-    for i in range(total_frames):
-    #for i, frame in enumerate(x[0]):
-        frame = x[0, i]
-        frame = frame.permute(2, 0, 1)
-        print(f"shape={frame.shape}")
-        filename = get_next_filename("tmp")
-        print(f"filename={filename}")
-        frame_cpu = frame.cpu()
-        print(f"frame_cpu={frame_cpu}")
-        write_png(frame_cpu, filename)
-        last_filename = filename
+#    last_filename = None
+#    for i in range(total_frames):
+#    #for i, frame in enumerate(x[0]):
+#        frame = x[0, i]
+#        frame = frame.permute(2, 0, 1)
+#        print(f"shape={frame.shape}")
+#        filename = get_next_filename("tmp")
+#        print(f"filename={filename}")
+#        frame_cpu = frame.cpu()
+#        print(f"frame_cpu={frame_cpu}")
+#        write_png(frame_cpu, filename)
+#        last_filename = filename
     print("generation saved to video.mp4.")
     #return [last_filename, "tmp/video.mp4"]
-    return last_filename
-    #return "video.mp4"
+    #return last_filename
+    return "tmp/video.mp4"
 
 
 video_paths = [
@@ -220,23 +221,23 @@ with gr.Blocks() as demo:
             #    choices=video_paths,
             #    label="Source"
             #)
-            total_frames = gr.Number(label="Number of Frames", value=2, step=16, interactive=True)
+            total_frames = gr.Number(label="Number of Frames", value=32, step=16, interactive=True)
             #total_frames = gr.Number(label="Number of Frames", value=32, step=16, interactive=True)
-            offset = gr.Number(label="Start Frame", value=2, step=60, interactive=True, visible=False)
+            offset = gr.Number(label="Start Frame", value=0, step=60, interactive=True, visible=False)
 #            button = gr.Button("generate")
         with gr.Column():
             #vid = gr.Video(label="Source", elem_id="source", interactive=False)
-            #output_video = gr.Video(label="Generated", autoplay=True)
-            output_img = gr.Image(label="Generated")
+            output_video = gr.Video(label="Generated", autoplay=True)
+            #output_img = gr.Image(label="Generated")
     with gr.Row():
         for key in ACTION_KEYS:
             button = gr.Button(key)
             button.click(
               fn=generate,
               inputs=[video_selector, total_frames, offset, button],
-              #outputs=[output_video]
+              outputs=[output_video]
               #outputs=[output_img, vid]
-              outputs=[output_img]
+              #outputs=[output_img]
             )
     offset.change(
         None,
