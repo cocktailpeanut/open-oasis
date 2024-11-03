@@ -88,7 +88,7 @@ def generate(video_id, total_frames, offset, action):
     arr = []
     for i in range(total_frames + offset):
         #cam = np.array([37, 29], dtype=np.int64)
-        cam = actions[i].camera
+        cam = actions[i]['camera']
         a = { "camera": cam }
 
         for j, action_key in enumerate(ACTION_KEYS):
