@@ -192,7 +192,8 @@ def generate(video_id, total_frames, offset, action):
         write_png(frame_cpu, filename)
         last_filename = filename
     print("generation saved to video.mp4.")
-    return [last_filename, "tmp/video.mp4"]
+    #return [last_filename, "tmp/video.mp4"]
+    return [last_filename]
     #return "video.mp4"
 
 
@@ -230,7 +231,8 @@ with gr.Blocks() as demo:
               fn=generate,
               inputs=[video_selector, total_frames, offset, button],
               #outputs=[output_video]
-              outputs=[output_img, vid]
+              #outputs=[output_img, vid]
+              outputs=[output_img]
             )
     offset.change(
         None,
