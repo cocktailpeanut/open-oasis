@@ -65,37 +65,38 @@ def generate(video_id, total_frames, offset, action):
     #mp4_path = f"sample_data/{video_id}.mp4"
     video = read_video(video_id, pts_unit="sec")[0].float() / 255
 
-    v = "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001"
-    actions_path = f"sample_data/{v}.actions.pt"
-    #video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
-    actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
-    arr2 = torch.load(actions_path, map_location=torch.device(device))
-    arr = []
-    for i in range(total_frames + offset):
-        arr.append({ "forward": 1, "attack": 1, "jump": 1 })
-    for i, item in enumerate(arr):
-        if len(arr2) > i:
-            arr[i]["camera"] = arr2[i]["camera"]
-            last_camera = arr[i]["camera"]
-        else:
-            arr[i]["camera"] = last_camera
-        for j, action_key in enumerate(ACTION_KEYS):
-            if action_key not in ["forward", "cameraX", "cameraY", "attack", "jump"]:
-                arr[i][action_key] = 0
+    #v = "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001"
+    #actions_path = f"sample_data/{v}.actions.pt"
+    ##video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
+    #actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
+    #arr2 = torch.load(actions_path, map_location=torch.device(device))
     #arr = []
     #for i in range(total_frames + offset):
-    #    a = { "camera": [0,0] }
-    #    for j, action_key in enumerate(ACTION_KEYS):
-    #        if action_key in ["cameraX", "cameraY"]:
-    #            print("ignore")
-    #        else:
-    #            a[action_key] = 0
-
-    #    if action in ["cameraX", "cameraY"]:
-    #        print("ignore")
+    #    arr.append({ "forward": 1, "attack": 1, "jump": 1 })
+    #for i, item in enumerate(arr):
+    #    if len(arr2) > i:
+    #        arr[i]["camera"] = arr2[i]["camera"]
+    #        last_camera = arr[i]["camera"]
     #    else:
-    #        a[action] = 1
-    #    arr.append(a)
+    #        arr[i]["camera"] = last_camera
+    #    for j, action_key in enumerate(ACTION_KEYS):
+    #        if action_key not in ["forward", "cameraX", "cameraY", "attack", "jump"]:
+    #            arr[i][action_key] = 0
+
+    arr = []
+    for i in range(total_frames + offset):
+        a = { "camera": [0,0] }
+        for j, action_key in enumerate(ACTION_KEYS):
+            if action_key in ["cameraX", "cameraY"]:
+                print("ignore")
+            else:
+                a[action_key] = 0
+
+        if action in ["cameraX", "cameraY"]:
+            print("ignore")
+        else:
+            a[action] = 1
+        arr.append(a)
 
 
     print(f"arr={arr}")
@@ -209,19 +210,19 @@ with gr.Blocks() as demo:
     # Display video options for selection
     with gr.Row():
         with gr.Column():
-            video_selector = gr.Video(label="Source")
+            video_selector = gr.Video(label="Source", elem_id="source")
             #video_selector = gr.Radio(
             #    choices=video_paths,
             #    label="Source"
             #)
             total_frames = gr.Number(label="Number of Frames", value=2, step=16, interactive=True)
             #total_frames = gr.Number(label="Number of Frames", value=32, step=16, interactive=True)
-            offset = gr.Number(label="Start Frame", value=0, step=60, interactive=True)
+            offset = gr.Number(label="Start Frame", value=2, step=60, interactive=True, visible=False)
 #            button = gr.Button("generate")
         with gr.Column():
-            vid = gr.Video(label="Source", elem_id="source", interactive=False)
+            #vid = gr.Video(label="Source", elem_id="source", interactive=False)
             #output_video = gr.Video(label="Generated", autoplay=True)
-            output_img = gr.Image(label="Generated", visible=False)
+            output_img = gr.Image(label="Generated")
     with gr.Row():
         for key in ACTION_KEYS:
             button = gr.Button(key)
@@ -244,7 +245,7 @@ with gr.Blocks() as demo:
     video_selector.change(
         fn=set,
         inputs=[video_selector],
-        outputs=vid
+        outputs=video_selector
     )
 
 demo.launch()
