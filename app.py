@@ -65,7 +65,8 @@ def generate(video_id, total_frames, offset, action):
     #mp4_path = f"sample_data/{video_id}.mp4"
     video = read_video(video_id, pts_unit="sec")[0].float() / 255
 
-    actions_path = f"sample_data/{video_id}.actions.pt"
+    v = "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001"
+    actions_path = f"sample_data/{v}.actions.pt"
     #video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
     actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
     arr2 = torch.load(actions_path, map_location=torch.device(device))
