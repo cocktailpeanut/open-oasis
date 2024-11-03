@@ -63,38 +63,40 @@ def get_next_filename(directory, extension="png"):
 def generate(video_id, total_frames, offset, action):
     print(f"generate {video_id}, total_frames={total_frames}, offset={offset}")
     #mp4_path = f"sample_data/{video_id}.mp4"
-    #actions_path = f"sample_data/{video_id}.actions.pt"
-    #video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
-    #actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
     video = read_video(video_id, pts_unit="sec")[0].float() / 255
 
-    #arr2 = torch.load(actions_path, map_location=torch.device(device))
-    #arr = []
-    #for i in range(total_frames + offset):
-    #    arr.append({ "forward": 1, "attack": 1, "jump": 1 })
-    #for i, item in enumerate(arr):
-    #    if len(arr2) > i:
-    #        arr[i]["camera"] = arr2[i]["camera"]
-    #        last_camera = arr[i]["camera"]
-    #    else:
-    #        arr[i]["camera"] = last_camera
-    #    for j, action_key in enumerate(ACTION_KEYS):
-    #        if action_key not in ["forward", "cameraX", "cameraY", "attack", "jump"]:
-    #            arr[i][action_key] = 0
+    actions_path = f"sample_data/{video_id}.actions.pt"
+    #video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
+    actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
+    arr2 = torch.load(actions_path, map_location=torch.device(device))
     arr = []
     for i in range(total_frames + offset):
-        a = { "camera": [0,0] }
-        for j, action_key in enumerate(ACTION_KEYS):
-            if action_key in ["cameraX", "cameraY"]:
-                print("ignore")
-            else:
-                a[action_key] = 0
-
-        if action in ["cameraX", "cameraY"]:
-            print("ignore")
+        arr.append({ "forward": 1, "attack": 1, "jump": 1 })
+    for i, item in enumerate(arr):
+        if len(arr2) > i:
+            arr[i]["camera"] = arr2[i]["camera"]
+            last_camera = arr[i]["camera"]
         else:
-            a[action] = 1
-        arr.append(a)
+            arr[i]["camera"] = last_camera
+        for j, action_key in enumerate(ACTION_KEYS):
+            if action_key not in ["forward", "cameraX", "cameraY", "attack", "jump"]:
+                arr[i][action_key] = 0
+    #arr = []
+    #for i in range(total_frames + offset):
+    #    a = { "camera": [0,0] }
+    #    for j, action_key in enumerate(ACTION_KEYS):
+    #        if action_key in ["cameraX", "cameraY"]:
+    #            print("ignore")
+    #        else:
+    #            a[action_key] = 0
+
+    #    if action in ["cameraX", "cameraY"]:
+    #        print("ignore")
+    #    else:
+    #        a[action] = 1
+    #    arr.append(a)
+
+
     print(f"arr={arr}")
     actions = one_hot_actions(arr)
     video = video[offset:offset+total_frames].unsqueeze(0)
