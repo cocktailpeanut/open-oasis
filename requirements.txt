@@ -30,4 +30,4 @@ typing_extensions==4.9.0
 urllib3==2.2.3
 zipp==3.20.2
 devicetorch
-gradio
+gradio==4.44.1
