@@ -65,10 +65,11 @@ def generate(video_id, total_frames, offset, action):
     #mp4_path = f"sample_data/{video_id}.mp4"
     video = read_video(video_id, pts_unit="sec")[0].float() / 255
 
-    #v = "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001"
-    #actions_path = f"sample_data/{v}.actions.pt"
+    v = "snippy-chartreuse-mastiff-f79998db196d-20220401-224517.chunk_001"
+    actions_path = f"sample_data/{v}.actions.pt"
     ##video = read_video(mp4_path, pts_unit="sec")[0].float() / 255
-    #actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
+    actions = one_hot_actions(torch.load(actions_path, map_location=torch.device(device)))
+    print(f"actions={actions}")
     #arr2 = torch.load(actions_path, map_location=torch.device(device))
     #arr = []
     #for i in range(total_frames + offset):
@@ -193,7 +194,7 @@ def generate(video_id, total_frames, offset, action):
         last_filename = filename
     print("generation saved to video.mp4.")
     #return [last_filename, "tmp/video.mp4"]
-    return [last_filename]
+    return last_filename
     #return "video.mp4"
 
 
